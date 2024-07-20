@@ -1,0 +1,116 @@
+from tkinter import *
+from tkinter import ttk
+
+
+
+def finish():
+    root.destroy()
+
+
+def delete_text():
+    out_window.delete("1.0", END)
+
+def main(text):
+    delete_text()
+    english_str = "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
+    russian_str = "йцукенгшщзхъфывапролджэячсмитьбю"
+    text_answer = ""
+    for char in text:
+        if char.isalpha():
+            char1 = char.lower()
+        else:
+            char1 = char
+        if char1 in russian_str:
+            if char.islower():
+                counter = 0
+                for i in russian_str:
+                    if i == char:
+                        break
+                    counter += 1
+                text_answer += english_str[counter]
+            else:
+                counter = 0
+                russian_str1 = russian_str.upper()
+                for i in russian_str1:
+                    if i == char:
+                        break
+                    counter += 1
+                text_answer += english_str.upper()[counter]
+        else:
+            text_answer += char
+    return text_answer
+
+def main2(text):
+    delete_text()
+    russian_str = "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
+    english_str = "йцукенгшщзхъфывапролджэячсмитьбю"
+    text_answer = ""
+    for char in text:
+        if char.isalpha():
+            char1 = char.lower()
+        else:
+            char1 = char
+        if char1 in russian_str:
+            if char.islower():
+                counter = 0
+                for i in russian_str:
+                    if i == char:
+                        break
+                    counter += 1
+                text_answer += english_str[counter]
+            else:
+                counter = 0
+                russian_str1 = russian_str.upper()
+                for i in russian_str1:
+                    if i == char:
+                        break
+                    counter += 1
+                text_answer += english_str.upper()[counter]
+        else:
+            text_answer += char
+    return text_answer
+
+def change_keyboard():
+    global enabled
+    text_output = ""
+    text = Enter_window.get("1.0",'end-1c')
+    #label["text"] = text
+    if enabled.get() == "ENG-RUS":
+        text_output = main2(text)
+    elif enabled.get() == "RUS-ENG":
+        text_output = main(text)
+    out_window.insert("1.0", text_output)
+
+
+root = Tk()  # создаем корневой объект - окно
+root.title("Keyboard changer")  # устанавливаем заголовок окна
+root.geometry("600x400+450+300")  # устанавливаем размеры окна
+root.resizable(False, False)
+root.iconbitmap(default="ikonka.ico")
+root.attributes("-fullscreen", False)
+root.protocol("WM_DELETE_WINDOW", finish)
+#
+Enter_window = Text(background="white", height=5, border=10, padx=10, pady=10, wrap="word")
+Enter_window.pack()
+#
+button_change = ttk.Button(text="Сменить раскладку", command=change_keyboard)
+button_change.pack(anchor=CENTER)
+#button_change.bind("<Alt_L>", change_keyboard)
+#
+#label = ttk.Label(text="TEST")
+#label.pack(anchor=S)
+#
+out_window = Text(background="white", height=5, border=10, padx=10, pady=10, wrap="word")
+out_window.pack()
+#
+enabled = StringVar()
+enabled.set("ENG-RUS")
+
+enabled_checkbutton = ttk.Checkbutton(text="Русский - английский", variable=enabled, offvalue="ENG-RUS", onvalue="RUS-ENG")
+enabled_checkbutton.pack(padx=6, pady=6, anchor=NW)
+
+enabled_label = ttk.Label(textvariable=enabled)
+enabled_label.pack(padx=6, pady=6, anchor=NW)
+
+
+root.mainloop()
